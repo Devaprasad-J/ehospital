@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Are you sure you want to delete this facility?</h2>
+<p><strong>Facility:</strong> {{ facility.name }}</p>
+<p><strong>Location:</strong> {{ facility.location }}</p>
+<p><strong>Description:</strong> {{ facility.description }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+</form>
+
+<a href="{% url 'manage_facilities' %}" class="btn btn-secondary">Cancel</a>
+{% endblock %}

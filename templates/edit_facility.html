@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Facility</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }} <!-- This will render the form fields -->
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<a href="{% url 'manage_facilities' %}" class="btn btn-secondary">Back to Manage Facilities</a>
+{% endblock %}

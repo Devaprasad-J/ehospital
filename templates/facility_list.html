@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Facilities{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center my-4 text-primary">Our Facilities</h2>
+    <div class="row">
+        {% for facility in facilities %}
+        <div class="col-md-4 col-sm-6 col-12 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if facility.image %}
+                <img src="{{ facility.image.url }}" class="card-img-top" alt="{{ facility.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title text-center text-uppercase text-success">{{ facility.name }}</h5>
+                    <p class="card-text"><strong>Location:</strong> {{ facility.location }}</p>
+                    <p class="card-text">{{ facility.description }}</p>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

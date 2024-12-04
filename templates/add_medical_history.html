@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Add Medical History for {{ patient.first_name }} - {{ patient.last_name }}</h2>
+
+    <form method="post" class="bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
+
+        <!-- Diagnosis Field -->
+        <div class="row mb-3">
+            <label for="{{ form.diagnosis.id_for_label }}" class="col-sm-3 col-form-label">Diagnosis:</label>
+            <div class="col-sm-9">
+                <input type="text" name="diagnosis" id="{{ form.diagnosis.id_for_label }}" class="form-control" value="{{ form.diagnosis.value }}">
+            </div>
+        </div>
+
+        <!-- Treatment Plan Field -->
+        <div class="row mb-3">
+            <label for="{{ form.treatment_plan.id_for_label }}" class="col-sm-3 col-form-label">Treatment Plan:</label>
+            <div class="col-sm-9">
+                <textarea name="treatment_plan" id="{{ form.treatment_plan.id_for_label }}" class="form-control">{{ form.treatment_plan.value }}</textarea>
+            </div>
+        </div>
+
+        <!-- Medication Field -->
+        <div class="row mb-3">
+            <label for="{{ form.medication.id_for_label }}" class="col-sm-3 col-form-label">Medication:</label>
+            <div class="col-sm-9">
+                <input type="text" name="medication" id="{{ form.medication.id_for_label }}" class="form-control" value="{{ form.medication.value }}">
+            </div>
+        </div>
+
+        <!-- Notes Field -->
+        <div class="row mb-3">
+            <label for="{{ form.notes.id_for_label }}" class="col-sm-3 col-form-label">Notes:</label>
+            <div class="col-sm-9">
+                <textarea name="notes" id="{{ form.notes.id_for_label }}" class="form-control">{{ form.notes.value }}</textarea>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Save Medical History</button>
+        </div>
+    </form>
+
+    <br>
+    <a href="{% url 'patient_management' patient.id %}" class="btn btn-secondary">Back to Patient Records</a>
+</div>
+{% endblock %}

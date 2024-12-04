@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Appointment</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <!-- Add the datepicker to the date field -->
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    <a href="{% url 'manage_appointments' %}" class="btn btn-secondary mt-3">Cancel</a>
+</form>
+
+<!-- Include jQuery and jQuery UI for the datepicker -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<!-- Include the CSS for jQuery UI Datepicker -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Apply the datepicker to the 'date' input field
+        $("input[name='date']").datepicker({
+            dateFormat: "yy-mm-dd",  // Set the date format
+            minDate: 0,  // Disable past dates
+            changeMonth: true,
+            changeYear: true
+        });
+    });
+</script>
+{% endblock %}

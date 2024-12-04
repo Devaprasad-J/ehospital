@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Create User{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Create User</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.username.label_tag }} {{ form.username }}
+        </div>
+        <div class="mb-3">
+            {{ form.email.label_tag }} {{ form.email }}
+        </div>
+        <div class="mb-3">
+            {{ form.first_name.label_tag }} {{ form.first_name }}
+        </div>
+        <div class="mb-3">
+            {{ form.last_name.label_tag }} {{ form.last_name }}
+        </div>
+        <div class="mb-3">
+            {{ form.phone_number.label_tag }} {{ form.phone_number }}
+        </div>
+        <div class="mb-3" id="gender-field">
+            {{ form.gender.label_tag }} {{ form.gender }}
+        </div>
+        <div class="mb-3" id="specialization-field">
+            {{ form.specialization.label_tag }} {{ form.specialization }}
+        </div>
+        <div class="mb-3" id="department-field">
+            {{ form.department.label_tag }} {{ form.department }}
+        </div>
+        <div class="mb-3">
+            {{ form.password1.label_tag }} {{ form.password1 }}
+        </div>
+        <div class="mb-3">
+            {{ form.password2.label_tag }} {{ form.password2 }}
+        </div>
+        <div class="mb-3">
+            {{ form.role.label_tag }} {{ form.role }}
+        </div>
+        <div class="mb-3">
+            {{ form.is_staff.label_tag }} {{ form.is_staff }}
+        </div>
+        <div class="mb-3">
+            {{ form.is_active.label_tag }} {{ form.is_active }}
+        </div>
+        <button type="submit" class="btn btn-primary">Create User</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function toggleFields() {
+        var role = document.querySelector('select[name="role"]').value;
+        var genderField = document.getElementById('gender-field');
+        var specializationField = document.getElementById('specialization-field');
+        var departmentField = document.getElementById('department-field');
+
+        if (role === 'Patient') {
+            genderField.style.display = 'block';
+            specializationField.style.display = 'none';
+            departmentField.style.display = 'none';
+        } else if (role === 'Doctor') {
+            genderField.style.display = 'none';
+            specializationField.style.display = 'block';
+            departmentField.style.display = 'block';
+        } else {
+            genderField.style.display = 'none';
+            specializationField.style.display = 'none';
+            departmentField.style.display = 'none';
+        }
+    }
+
+    toggleFields();  // Initial call
+    document.querySelector('select[name="role"]').addEventListener('change', toggleFields);
+});
+</script>
+
+
+{% endblock %}

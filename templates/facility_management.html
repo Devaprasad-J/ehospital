@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Manage Facilities</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for facility in facilities %}
+            <tr>
+                <td>{{ facility.name }}</td>
+                <td>{{ facility.location }}</td>
+                <td>{{ facility.description }}</td>
+                <td>
+                    <a href="{% url 'edit_facility' facility.id %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'delete_facility' facility.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-4">Back to Admin Dashboard</a>
+</div>
+{% endblock %}

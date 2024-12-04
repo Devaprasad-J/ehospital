@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Patient Management: {{ patient.first_name }} {{ patient.last_name }}</h2>
+    <div class="card p-4 mb-4 shadow-sm">
+        <h4>Patient Information</h4>
+        <p><strong>Gender:</strong> {{ patient.gender }}</p>
+        <p><strong>Phone:</strong> {{ patient.phone_number }}</p>
+    </div>
+
+    <!-- Medical History Section -->
+    <div class="card p-4 mb-4 shadow-sm">
+        <h4>Medical History</h4>
+        <ul class="list-group">
+            {% for history in medical_history %}
+            <li class="list-group-item">
+                <strong>{{ history.date_prescribed }}:</strong> {{ history.diagnosis }}
+            </li>
+            {% empty %}
+            <li class="list-group-item text-muted">No medical history available.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'add_medical_history' patient.id %}" class="btn btn-secondary mt-3">Add Medical History</a>
+    </div>
+
+    <!-- E-Prescriptions Section -->
+    <div class="card p-4 mb-4 shadow-sm">
+        <h4>E-Prescriptions</h4>
+        <ul class="list-group">
+            {% for prescription in e_prescriptions %}
+            <li class="list-group-item">
+                <strong>Medication:</strong> {{ prescription.medication }} <br>
+                <strong>Dosage:</strong> {{ prescription.dosage }} <br>
+                <strong>Date:</strong> {{ prescription.date_prescribed }}
+            </li>
+            {% empty %}
+            <li class="list-group-item text-muted">No prescriptions available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="{% url 'doctor_dashboard' %}" class="btn btn-primary">Back to Doctor Dashboard</a>
+</div>
+{% endblock %}

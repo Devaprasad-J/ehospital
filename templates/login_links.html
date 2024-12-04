@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Links{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Login</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4 d-flex align-items-stretch">
+            <div class="card shadow-sm w-100">
+                <div class="card-body d-flex flex-column">
+                    <h4 class="card-title">Doctor Login</h4>
+                    <p class="card-text">Manage appointments, view patient details, and e-prescribe.</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'login_doctor' %}" class="btn btn-primary">Doctor Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 d-flex align-items-stretch">
+            <div class="card shadow-sm w-100">
+                <div class="card-body d-flex flex-column">
+                    <h4 class="card-title">Admin Login</h4>
+                    <p class="card-text">Manage users, facilities, and appointment schedules.</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'login_admin' %}" class="btn btn-primary">Admin Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

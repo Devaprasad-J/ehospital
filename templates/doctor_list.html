@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor List{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Doctor List</h1>
+    <div class="row">
+        {% for doctor in doctors %}
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Dr. {{ doctor.first_name }} {{ doctor.last_name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ doctor.email }}</p>
+                    <p class="card-text"><strong>Phone Number:</strong> {{ doctor.phone_number }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

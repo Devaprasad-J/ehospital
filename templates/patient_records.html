@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Patient Records for {{ patient.user.username }}</h2>
+
+<h3>Medical History</h3>
+<ul>
+    {% for record in medical_history %}
+        <li>
+            Date: {{ record.date_prescribed }}<br>
+            Diagnosis: {{ record.diagnosis }}<br>
+            Treatment Plan: {{ record.treatment_plan }}<br>
+            Medication: {{ record.medication }}<br>
+            Treatment: {{ record.treatment }}<br>
+        </li>
+    {% empty %}
+        <li>No records available.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'add_medical_history' patient.id %}">Add New Record</a>
+
+{% endblock %}

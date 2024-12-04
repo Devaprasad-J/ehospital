@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Manage Departments</h2>
+    <a href="{% url 'create_department' %}" class="btn btn-primary mb-4">Create New Department</a>
+    <ul class="list-group">
+        {% for department in departments %}
+        <li class="list-group-item">
+            {{ department.name }}
+            <a href="{% url 'edit_department' department.id %}" class="btn btn-sm btn-outline-secondary mx-2">Edit</a>
+            <form method="POST" action="{% url 'delete_department' department.id %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-4">Back to Admin Dashboard</a>
+</div>
+{% endblock %}

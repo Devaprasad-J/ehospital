@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Treatment Plan for {{ patient.user.username }}</h2>
+
+{% if medical_history %}
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Treatment Plan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for history in medical_history %}
+            <tr>
+                <td>{{ history.date }}</td>
+                <td>{{ history.treatment_plan }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No treatment plan available.</p>
+{% endif %}
+{% endblock %}

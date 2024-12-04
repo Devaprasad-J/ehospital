@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Doctor's Appointment Schedule</h2>
+
+<ul>
+    {% for appointment in appointments %}
+    <li>
+        Patient: {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}<br>
+        Date: {{ appointment.date }}<br>
+        Reason: {{ appointment.reason }}<br>
+        <a href="{% url 'patient_management' appointment.patient.id %}">View Patient Records</a><br>
+    </li>
+    {% empty %}
+    <li>No appointments scheduled.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

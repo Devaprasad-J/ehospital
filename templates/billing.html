@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Billing and Payments</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Amount Due</th>
+            <th>Due Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bill in bills %}
+        <tr>
+            <td>{{ bill.amount_due }}</td>
+            <td>{{ bill.due_date }}</td>
+            <td>{{ 'Paid' if bill.is_paid else 'Due' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Admin Dashboard</h2>
+
+    <!-- User Management Section -->
+    <div class="card my-4">
+        <div class="card-header">
+            <h3>User Management</h3>
+        </div>
+        <div class="card-body">
+            <p>Manage user accounts, permissions, and access levels within the system.</p>
+            <ul class="list-unstyled">
+                <li><a href="{% url 'manage_users' %}" class="btn btn-outline-primary mb-2">Manage Users</a></li>
+                <li><a href="{% url 'create_user' %}" class="btn btn-outline-primary mb-2">Create New User</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Facility Management Section -->
+    <div class="card my-4">
+        <div class="card-header">
+            <h3>Facility Management</h3>
+        </div>
+        <div class="card-body">
+            <p>Manage healthcare facility details, including locations, departments, and resources.</p>
+            <ul class="list-unstyled">
+                <li><a href="{% url 'manage_facilities' %}" class="btn btn-outline-primary mb-2">Manage Facilities</a></li>
+                <li><a href="{% url 'create_facility' %}" class="btn btn-outline-primary mb-2">Create New Facility</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Appointment Management Section -->
+    <div class="card my-4">
+        <div class="card-header">
+            <h3>Appointment Management</h3>
+        </div>
+        <div class="card-body">
+            <p>Schedule, coordinate, and manage appointments across departments and healthcare providers.</p>
+            <ul class="list-unstyled">
+                <li><a href="{% url 'manage_appointments' %}" class="btn btn-outline-primary mb-2">Manage Appointments</a></li>
+                <li><a href="{% url 'create_appointment' %}" class="btn btn-outline-primary mb-2">Create New Appointment</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Department Management Section -->
+    <div class="card my-4">
+        <div class="card-header">
+            <h3>Department Management</h3>
+        </div>
+        <div class="card-body">
+            <p>Manage department details, including creating, editing, and deleting departments.</p>
+            <ul class="list-unstyled">
+                <li><a href="{% url 'manage_departments' %}" class="btn btn-outline-primary mb-2">Manage Departments</a></li>
+                <li><a href="{% url 'create_department' %}" class="btn btn-outline-primary mb-2">Create New Department</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- Data Overview Section -->
+    <div class="card my-4">
+        <div class="card-header">
+            <h3>Data Overview</h3>
+        </div>
+        <div class="card-body">
+            <p>Here is a quick overview of the current data for patients, doctors, and appointments:</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Patients</h4>
+                    <ul class="list-unstyled">
+                        {% for patient in patients %}
+                        <li>{{ patient.user.username }} - {{ patient.user.email }}</li>
+                        {% empty %}
+                        <li>No patients available.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4>Doctors</h4>
+                    <ul class="list-unstyled">
+                        {% for doctor in doctors %}
+                        <li>{{ doctor.user.username }} - Specialty: {{ doctor.specialty }}</li>
+                        {% empty %}
+                        <li>No doctors available.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4>Appointments</h4>
+                    <ul class="list-unstyled">
+                        {% for appointment in appointments %}
+                        <li>
+                            Patient: {{ appointment.patient.user.username }} <br>
+                            Doctor: {{ appointment.doctor.user.username }} <br>
+                            Date: {{ appointment.date }}
+                        </li>
+                        {% empty %}
+                        <li>No appointments available.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Logout Button -->
+    <form method="POST" action="{% url 'logout_patient' %}" class="text-center my-4">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</div>
+{% endblock %}

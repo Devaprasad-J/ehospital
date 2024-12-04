@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Doctor Dashboard</h2>
+
+    <h3 class="mt-4">Appointments</h3>
+    <ul class="list-group">
+        {% for appointment in appointments %}
+        <li class="list-group-item">
+            <strong>Patient:</strong> {{ appointment.patient.first_name }} {{ appointment.patient.last_name }} <br>
+            <strong>Date:</strong> {{ appointment.date }} <br>
+            <strong>Reason:</strong> {{ appointment.reason }} <br>
+            <a href="{% url 'patient_management' appointment.patient.id %}" class="btn btn-link">View Patient Records</a>
+            <a href="{% url 'e_prescribe' appointment.patient.id %}" class="btn btn-link">E-Prescribe Medication</a>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No appointments scheduled.</li>
+        {% endfor %}
+    </ul>
+
+    <h3 class="mt-4">Patients</h3>
+    <ul class="list-group">
+        {% for patient in patients %}
+        <li class="list-group-item">{{ patient.first_name }} {{ patient.last_name }}</li>
+        {% empty %}
+        <li class="list-group-item">No patients found.</li>
+        {% endfor %}
+    </ul>
+
+    <form method="POST" action="{% url 'logout_patient' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mt-4">Logout</button>
+    </form>
+</div>
+{% endblock %}

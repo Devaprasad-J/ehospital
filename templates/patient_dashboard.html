@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">Welcome, {{ request.user.patient.first_name }} {{ request.user.patient.last_name }}</h1>
+
+    <h3 class="mt-4">Your Appointments</h3>
+    <ul class="list-group">
+        {% for appointment in appointments %}
+        <li class="list-group-item">
+            {{ appointment.date }} - {{ appointment.time }} with Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}
+            <a href="{% url 'cancel_appointment' appointment.id %}" class="btn btn-danger btn-sm">Cancel</a>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No appointments booked.</li>
+        {% endfor %}
+    </ul>
+
+    {% if medical_history %}
+        <h3>Medical History</h3>
+        <ul>
+            {% for history in medical_history %}
+                <li>
+                    <strong>Date:</strong> {{ history.date_prescribed }} <br>
+                    <strong>Diagnosis:</strong> {{ history.diagnosis }} <br>
+                    <strong>Treatment:</strong> {{ history.treatment_plan }} <br>
+                    <strong>Medication:</strong> {{ history.medication }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No medical history available.</p>
+    {% endif %}
+
+    <h3 class="mt-4">Billing Details</h3>
+    <ul class="list-group">
+        {% for billing in billing_details %}
+        <li class="list-group-item">
+            Appointment on {{ billing.appointment.date }} - Amount: ₹{{ billing.amount }} - Status: {{ billing.payment_status }} - Date: {{ billing.payment_date }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">No billing records available.</li>
+        {% endfor %}
+    </ul>
+
+    <h3 class="mt-4">Book a New Appointment</h3>
+    <p><a href="{% url 'book_appointment' %}" class="btn btn-primary">Click here to book a new appointment</a></p>
+
+    <form method="POST" action="{% url 'logout_patient' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mt-4">Logout</button>
+    </form>
+</div>
+{% endblock %}

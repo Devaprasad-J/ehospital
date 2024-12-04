@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Manage Appointments</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.patient.user.username }}</td>
+                <td>{{ appointment.doctor.user.username }}</td>
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.status }}</td>
+                <td>
+                    <a href="{% url 'edit_appointment' appointment.id %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'delete_appointment' appointment.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-4">Back to Admin Dashboard</a>
+</div>
+{% endblock %}

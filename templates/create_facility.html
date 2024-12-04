@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Create New Facility</h2>
+    <form method="post" class="bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">Add Facility</button>
+    </form>
+    <a href="{% url 'manage_facilities' %}" class="btn btn-secondary mt-3">Back to Manage Facilities</a>
+</div>
+{% endblock %}

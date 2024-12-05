@@ -53,6 +53,11 @@ urlpatterns = [
     path('department/delete/<int:department_id>/', views.delete_department, name='delete_department'),
     path('manage_departments/', views.manage_departments, name='manage_departments'),
 
+    path('pay-medicine-bill/<int:bill_id>/', views.pay_medicine_bill, name='pay_medicine_bill'),
+    path('generate-medicine-bill/<int:prescription_id>/', views.generate_medicine_bill, name='generate_medicine_bill'),  # New URL
+    path('medicine-payment-success/', views.medicine_payment_success, name='medicine_payment_success'),
+    path('medicine-payment-failed/', views.medicine_payment_failed, name='medicine_payment_failed'),
+
     path('logout/', views.logout_patient, name='logout_patient'),
 
 ]

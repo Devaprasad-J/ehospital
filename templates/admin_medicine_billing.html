@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Medication</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prescription in prescriptions %}
+            <tr>
+                <td>{{ prescription.patient.user.username }}</td>
+                <td>{{ prescription.medication }}</td>
+                <td>
+                    <form method="post" action="{% url 'generate_medicine_bill' prescription.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Generate Bill</button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">No prescriptions available.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

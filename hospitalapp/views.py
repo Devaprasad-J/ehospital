@@ -19,7 +19,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import update_session_auth_hash
-from .models import Location, Department
+from .models import Location, Department, MedicineBill
 from django.contrib import messages
 from .forms import PatientLoginForm, EPrescriptionForm, MedicalHistoryForm, DepartmentForm
 
@@ -89,7 +89,8 @@ def patient_dashboard(request):
     # Fetch relevant data for the patient
     appointments = Appointment.objects.filter(patient=patient).exclude(status='Cancelled')
     medical_history = MedicalHistory.objects.filter(patient=patient)
-    billing_details = Billing.objects.filter(appointment__patient=patient).filter(payment_status='Completed')
+    billing_details = Billing.objects.filter(appointment__patient=patient, payment_status='Completed')
+    medicine_bills = MedicineBill.objects.filter(patient=patient)  # Fetch all medicine bills for the patient
 
     if request.method == 'POST' and 'book_appointment' in request.POST:
         appointment_form = AppointmentForm(request.POST)
@@ -107,6 +108,7 @@ def patient_dashboard(request):
         'medical_history': medical_history,
         'appointment_form': appointment_form,
         'billing_details': billing_details,
+        'medicine_bills': medicine_bills,  # Include medicine bills in the context
     }
     return render(request, 'patient_dashboard.html', context)
 
@@ -383,10 +385,13 @@ def admin_dashboard(request):
     doctors = Doctor.objects.all()
     appointments = Appointment.objects.all()
 
+    prescriptions = EPrescription.objects.filter(medicine_bills__isnull=True)
+
     return render(request, 'admin_dashboard.html', {
         'patients': patients,
         'doctors': doctors,
-        'appointments': appointments
+        'appointments': appointments,
+        'prescriptions': prescriptions,
     })
 
 
@@ -761,3 +766,89 @@ def delete_department(request, department_id):
         department.delete()
         return redirect('manage_departments')
     return render(request, 'delete_department.html', {'department': department})
+
+
+@login_required
+def generate_medicine_bill(request, prescription_id):
+    if not request.user.is_staff:
+        return redirect('login_admin')  # Restrict non-admin users
+
+    # Fetch the prescription object
+    prescription = get_object_or_404(EPrescription, id=prescription_id)
+
+    if request.method == 'POST':
+        # Get the entered amount from the form
+        amount = request.POST.get('amount')
+        if amount:
+            # Create the medicine bill
+            MedicineBill.objects.create(
+                prescription=prescription,
+                patient=prescription.patient,
+                total_amount=amount,
+            )
+            messages.success(request, f"Bill for {prescription.medication} generated successfully.")
+            return redirect('admin_dashboard')
+        else:
+            messages.error(request, "Please enter a valid amount.")
+
+    return render(request, 'generate_medicine_bill.html', {'prescription': prescription})
+
+
+@login_required
+def pay_medicine_bill(request, bill_id):
+    bill = get_object_or_404(MedicineBill, id=bill_id, patient=request.user.patient)
+    if bill.payment_status == 'Completed':
+        messages.info(request, "This bill is already paid.")
+        return redirect('billing_details')
+
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': 'inr',
+                'product_data': {
+                    'name': f"Medicine Bill for {bill.prescription.medication}",
+                },
+                'unit_amount': int(bill.total_amount * 100),
+            },
+            'quantity': 1,
+        }],
+        metadata={'bill_id': bill.id},
+        mode='payment',
+        success_url=request.build_absolute_uri(reverse('medicine_payment_success')) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=request.build_absolute_uri(reverse('medicine_payment_failed')),
+    )
+    return redirect(session.url, code=303)
+
+
+def medicine_payment_success(request):
+    session_id = request.GET.get('session_id')
+    if not session_id:
+        return redirect('medicine_payment_failed')
+
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+    except stripe.error.InvalidRequestError:
+        return redirect('medicine_payment_failed')
+
+    if session.payment_status == 'paid':
+        bill_id = session.metadata['bill_id']
+        bill = get_object_or_404(MedicineBill, id=bill_id)
+        bill.payment_status = 'Completed'
+        bill.payment_date = now()
+        bill.save()
+        return render(request, 'medicine_payment_success.html', {'bill': bill})
+    return redirect('medicine_payment_failed')
+
+
+def medicine_payment_failed(request):
+    return render(request, 'medicine_payment_failed.html')
+
+
+@login_required
+@staff_member_required
+def admin_medicine_billing(request):
+    prescriptions = EPrescription.objects.exclude(medicinebill__isnull=False)
+    return render(request, 'admin_medicine_billing.html', {'prescriptions': prescriptions})

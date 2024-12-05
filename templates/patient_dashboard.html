@@ -4,6 +4,7 @@
 <div class="container">
     <h1 class="text-center my-4">Welcome, {{ request.user.patient.first_name }} {{ request.user.patient.last_name }}</h1>
 
+    <!-- Appointments Section -->
     <h3 class="mt-4">Your Appointments</h3>
     <ul class="list-group">
         {% for appointment in appointments %}
@@ -16,6 +17,7 @@
         {% endfor %}
     </ul>
 
+    <!-- Medical History Section -->
     {% if medical_history %}
         <h3>Medical History</h3>
         <ul>
@@ -32,20 +34,52 @@
         <p>No medical history available.</p>
     {% endif %}
 
+    <!-- Billing Details Section -->
     <h3 class="mt-4">Billing Details</h3>
     <ul class="list-group">
+        <!-- Appointment Billing -->
         {% for billing in billing_details %}
         <li class="list-group-item">
-            Appointment on {{ billing.appointment.date }} - Amount: ₹{{ billing.amount }} - Status: {{ billing.payment_status }} - Date: {{ billing.payment_date }}
+            Appointment: {{ billing.appointment.date }} - Amount: ₹{{ billing.amount }} - Status: {{ billing.payment_status }}
         </li>
         {% empty %}
-        <li class="list-group-item">No billing records available.</li>
+        <li class="list-group-item">No appointment billing records available.</li>
+        {% endfor %}
+
+        <!-- Medicine Billing -->
+        {% for bill in medicine_bills %}
+        <li class="list-group-item">
+            Medication: {{ bill.prescription.medication }} - Amount: ₹{{ bill.total_amount }} - Date Generated: {{ bill.date_generated }} - Payment Status: {{ bill.payment_status }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">No medicine billing records available.</li>
         {% endfor %}
     </ul>
 
+
+    <!-- Medicine Bills Section -->
+    <h3 class="mt-4">Medicine Bills</h3>
+    <ul class="list-group">
+        {% for bill in medicine_bills %}
+        <li class="list-group-item">
+            <strong>Medication:</strong> {{ bill.prescription.medication }}<br>
+            <strong>Total Amount:</strong> ₹{{ bill.total_amount }}<br>
+            <strong>Date Generated:</strong> {{ bill.date_generated }}<br>
+            <strong>Payment Status:</strong> {{ bill.payment_status }}<br>
+            {% if bill.payment_status == 'Pending' %}
+                <a href="{% url 'pay_medicine_bill' bill.id %}" class="btn btn-success btn-sm">Pay Now</a>
+            {% endif %}
+        </li>
+        {% empty %}
+        <li class="list-group-item">No medicine bills available.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Book Appointment Section -->
     <h3 class="mt-4">Book a New Appointment</h3>
     <p><a href="{% url 'book_appointment' %}" class="btn btn-primary">Click here to book a new appointment</a></p>
 
+    <!-- Logout Button -->
     <form method="POST" action="{% url 'logout_patient' %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger mt-4">Logout</button>

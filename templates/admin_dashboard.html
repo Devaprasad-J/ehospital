@@ -107,6 +107,35 @@
         </div>
     </div>
 
+    <h2>Medicine Billing</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Medication</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prescription in prescriptions %}
+            <tr>
+                <td>{{ prescription.patient.user.username }}</td>
+                <td>{{ prescription.medication }}</td>
+                <td>
+                    <a href="{% url 'generate_medicine_bill' prescription.id %}" class="btn btn-primary">
+                        Generate Bill
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No pending prescriptions for billing.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
 
     <!-- Logout Button -->
     <form method="POST" action="{% url 'logout_patient' %}" class="text-center my-4">

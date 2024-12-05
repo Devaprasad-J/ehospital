@@ -83,7 +83,7 @@
                     <h4>Doctors</h4>
                     <ul class="list-unstyled">
                         {% for doctor in doctors %}
-                        <li>{{ doctor.user.username }} - Specialty: {{ doctor.specialty }}</li>
+                        <li>{{ doctor.user.username }} - Specialty: {{ doctor.specialization }}</li>
                         {% empty %}
                         <li>No doctors available.</li>
                         {% endfor %}

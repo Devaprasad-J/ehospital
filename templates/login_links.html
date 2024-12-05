@@ -21,9 +21,20 @@
             <div class="card shadow-sm w-100">
                 <div class="card-body d-flex flex-column">
                     <h4 class="card-title">Admin Login</h4>
-                    <p class="card-text">Manage users, facilities, and appointment schedules.</p>
+                    <p class="card-text">Manage users, facilities, departments and appointment schedules.</p>
                     <div class="mt-auto">
                         <a href="{% url 'login_admin' %}" class="btn btn-primary">Admin Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 d-flex align-items-stretch">
+            <div class="card shadow-sm w-100">
+                <div class="card-body d-flex flex-column">
+                    <h4 class="card-title">Patient Login</h4>
+                    <p class="card-text">View appointments and medical records, and communicate with your doctor.</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'login_patient' %}" class="btn btn-primary">Patient Login</a>
                     </div>
                 </div>
             </div>

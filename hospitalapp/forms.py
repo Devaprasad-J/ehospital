@@ -81,7 +81,7 @@ class MedicalHistoryForm(forms.ModelForm):
 class FacilityForm(forms.ModelForm):
     class Meta:
         model = Facility
-        fields = ['name', 'location', 'description', 'image']
+        fields = ['name', 'location', 'description']
 
 
 # Form for user creation and management (admin view)
@@ -134,7 +134,6 @@ class CustomUserCreationForm(UserCreationForm):
             'specialization', 'department', 'password1', 'password2', 'role',
             'is_staff', 'is_active'
         ]
-
 
 
 # Form for e-prescribing

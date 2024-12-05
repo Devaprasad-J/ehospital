@@ -519,10 +519,8 @@ def facility_management(request):
         return redirect('login_admin')
 
     facilities = Facility.objects.all()
-
     locations = Location.objects.all()
     departments = Department.objects.all()
-
 
     return render(request, 'facility_management.html', {
         'facilities': facilities,
@@ -537,7 +535,6 @@ def create_facility(request):
         form = FacilityForm(request.POST, request.FILES)
         if form.is_valid():
             print("Form is valid")
-            print("Uploaded File:", request.FILES.get('image'))
             form.save()
             messages.success(request, 'Facility added successfully!')
             return redirect('manage_facilities')

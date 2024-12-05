@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'e_hospitality.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'e-hospital_db',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres@123',
-        'HOST': 'localhost',
-        'PORT': '5434',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'e_hospital',
+        'USER': 'root',
+        'PASSWORD': 'Devmysql@1',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 

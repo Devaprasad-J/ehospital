@@ -3,7 +3,6 @@
 {% block content %}
 <div class="container">
     <h2 class="text-center my-4">Manage Departments</h2>
-    <a href="{% url 'create_department' %}" class="btn btn-primary mb-4">Create New Department</a>
     <ul class="list-group">
         {% for department in departments %}
         <li class="list-group-item">
